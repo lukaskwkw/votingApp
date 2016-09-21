@@ -21,6 +21,7 @@ import makeWebpackConfig from './webpack.make';
 
 var plugins = gulpLoadPlugins();
 var config;
+var browser = 'google-chrome';
 
 const clientPath = 'client';
 const serverPath = 'server';
@@ -290,6 +291,9 @@ gulp.task('clean:tmp', () => del(['.tmp/**/*'], {dot: true}));
 gulp.task('start:client', cb => {
     whenServerReady(() => {
         open('http://localhost:' + config.browserSyncPort);
+
+        // unfortunately it won't work because open library have bugs
+        // open({app: browser, uri: 'http://localhost:' + config.browserSyncPort});
         cb();
     });
 });

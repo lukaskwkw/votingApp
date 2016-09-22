@@ -1,0 +1,19 @@
+.poll-option {
+	position: relative;
+	margin-top: 1em;
+}
+
+.option-clear {
+	position: absolute;
+	color: #ccc;
+	cursor: pointer;
+	right: 7px;
+	margin: auto;
+	top: 0;
+	height: 14px;
+	bottom: 0;
+}
+
+.option-clear:hover {
+	color: #777
+}

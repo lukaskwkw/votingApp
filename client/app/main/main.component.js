@@ -5,11 +5,17 @@ import routing from './main.routes';
 export class MainController {
 
   /*@ngInject*/
-  constructor($http) {
+  constructor($http, Poll) {
     this.$http = $http;
+    this.Poll = Poll;
+
   }
 
   $onInit() {
+    this.Poll.query().$promise.then(res=> {
+      this.polls = res;
+      console.log(res);
+    })
     this.$http.get('/api/things')
       .then(response => {
         this.awesomeThings = response.data;

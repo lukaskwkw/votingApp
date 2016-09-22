@@ -7,7 +7,7 @@ module.exports = {
 
   // MongoDB connection options
   mongo: {
-    uri: 'mongodb://localhost/fccvotingapp2-dev'
+    uri: 'mongodb://user1:WUmE8FP7UiB2@ds037005.mlab.com:37005/mongolkw'
   },
 
   // Seed database on startup

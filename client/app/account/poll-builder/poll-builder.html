@@ -1,0 +1,30 @@
+<div class="container">
+  <div class="row col-md-6">
+    <form name="form" ng-submit="vm.createPoll()" novalidate>
+      <div class="form-group">
+        <label for="pollTitle">
+          Poll Title
+        </label>
+        <input class="form-control" placeholder="Poll question i.e. Favourite music band?" ng-model="vm.question" name="question" id="pollTitle" />
+        <hr>
+        <label>Select category</label>
+        <select class="form-control" ng-model="vm.selectedCategory" ng-options="obj.category for obj in vm.parsedData" name="categories">
+          <!-- <option ng-repeat="data in vm.parsedData"  ng-bind="data.category"></option> -->
+        </select>
+      </div>
+      <div class="form-group">
+        <hr>
+        <label for="pollOptions">
+          Options:
+        </label>
+        <a class="btn btn-xs btn-primary" ng-click="vm.options.push({ opt : ''});"><span class="glyphicon glyphicon-plus-sign"></span>Add option</a>
+        <div class="poll-option" ng-model="options" name="options" ng-repeat="option in vm.options">
+          <input class="form-control" placeholder="Option {{$index+1}}..." ng-model="option.opt"/>
+          <!-- <input class="form-control" ng-model="options[$index]"  /> -->
+          <span class="option-clear glyphicon glyphicon-remove" ng-click="vm.options.splice($index,1)" ></span>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-default">Add Poll</button>
+    </form>
+  </div>
+</div>

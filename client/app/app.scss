@@ -19,9 +19,11 @@ $fa-font-path: '/assets/fonts/font-awesome/';
 
 // Component styles are injected through gulp
 /* inject:scss */
+@import 'account/poll-builder/poll-builder';
 @import 'admin/admin';
 @import 'main/main';
 @import '../components/footer/footer';
 @import '../components/modal/modal';
 @import '../components/oauth-buttons/oauth-buttons';
+@import '../components/poll/poll';
 /* endinject */

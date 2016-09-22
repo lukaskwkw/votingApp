@@ -8,10 +8,11 @@ import routing from './account.routes';
 import login from './login';
 import settings from './settings';
 import signup from './signup';
+import pollBuilder from './poll-builder';
 import oauthButtons from '../../components/oauth-buttons';
 
 export default angular.module('fccVotingApp2App.account', [uiRouter, login, settings, signup,
-    oauthButtons
+    oauthButtons, pollBuilder
   ])
   .config(routing)
   .run(function($rootScope) {

@@ -1,0 +1,27 @@
+<div class="panel panel-primary" ng-cloak>
+  <form>
+    <div class="panel-heading">
+      <h3 class="panel-title"><span class="fa fa-line-chart"></span>{{$ctrl.data.category}}</h3>
+    </div>
+    <div class="panel-body">
+    <canvas ng-if="$ctrl.chartData" id="pie" class="chart chart-pie"
+      chart-data="$ctrl.chartData" chart-labels="$ctrl.labels" chart-options="options">
+    </canvas>
+<hr>
+    <h3 class="panel-title">{{$ctrl.data.question}}</h3>
+<hr>
+    <div class="btn-group btn-group-vertical" data-toggle="buttons">
+      <label class="btn" ng-repeat="label in $ctrl.labels">
+        <input type="radio" name='radioOpt' ng-model="$ctrl.myChoice.index" ng-value="$index" ><i class="fa fa-circle-o fa-2x"></i><i class="fa fa-dot-circle-o fa-2x"></i><span ng-bind="label"></span>
+      </label>
+    </div>
+
+    </div>
+    <div class="panel-footer text-center">
+    <h4></h4>
+      <button type="submit" ng-click="$ctrl.vote()" class="btn btn-primary btn-block btn-sm">
+      Vote</button>
+      <a href="#" class="small"></a>
+    </div>
+  </form>
+</div>

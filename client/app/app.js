@@ -21,14 +21,16 @@ import account from './account';
 import admin from './admin';
 import navbar from '../components/navbar/navbar.component';
 import footer from '../components/footer/footer.component';
+import pollComponent from '../components/poll/poll.component';
 import main from './main/main.component';
 import constants from './app.constants';
 import util from '../components/util/util.module';
-
+// require('../../node_modules/chart.js/dist/Chart.min.js');
+import ngChartjs from '../../node_modules/angular-chart.js/dist/angular-chart.min.js';
 import './app.scss';
 
-angular.module('fccVotingApp2App', [ngCookies, ngResource, ngSanitize, uiRouter, uiBootstrap, _Auth,
-    account, admin, navbar, footer, main, constants, util
+angular.module('fccVotingApp2App', [ngChartjs, ngCookies, ngResource, ngSanitize, uiRouter, uiBootstrap, _Auth,
+    account, admin, navbar, footer, pollComponent, main, constants, util
   ])
   .config(routeConfig)
   .run(function($rootScope, $location, Auth) {

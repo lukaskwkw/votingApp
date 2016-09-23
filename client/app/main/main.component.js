@@ -5,8 +5,8 @@ import routing from './main.routes';
 export class MainController {
 
   /*@ngInject*/
-  constructor($http, Poll) {
-    this.$http = $http;
+  constructor(Poll, Auth) {
+    this.Auth = Auth;
     this.Poll = Poll;
 
   }
@@ -15,7 +15,26 @@ export class MainController {
     this.Poll.query().$promise.then(res=> {
       this.polls = res;
       console.log(res);
+    });
+
+    this.Auth.getCurrentUser().then(user=>{
+      this.currentUser = user;
+
+      if (!this.currentUser._id)
+          this.currentUser._id = null;
     })
+
+  }
+
+  deletePoll(poll) {
+    console.log(this.polls.indexOf(poll));
+
+    this.Poll.delete({
+      id: poll._id
+    }).$promise(()=>{
+      this.polls.splice(this.polls.indexOf(poll), 1);
+    });
+
   }
 }
 

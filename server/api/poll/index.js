@@ -8,9 +8,10 @@ var router = express.Router();
 
 router.get('/', controller.index);
 router.get('/:id', controller.show);
-router.post('/', controller.create);
-router.put('/:id', controller.upsert);
+router.post('/', auth.isAuthenticated(), controller.create);
+router.post('/vote', auth.checkCredentials(), controller.vote);
+router.put('/:id', auth.isAuthenticated(), controller.upsert);
 router.patch('/:id', controller.patch);
-router.delete('/:id', controller.destroy);
+router.delete('/:id', auth.isAuthenticated(), controller.destroy);
 
 module.exports = router;

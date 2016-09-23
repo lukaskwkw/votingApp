@@ -1,19 +1,8 @@
 <div class="container">
+  <div class="col-lg-3 col-md-4 col-sm-6" ng-repeat="poll in $ctrl.polls" ng-init="expression">
 
-  <div class="col-lg-3 col-md-4 col-sm-6" ng-repeat="poll in $ctrl.polls">
-	<poll data="poll"></poll>
-  </div>
+   <a ng-show="$ctrl.currentUser._id === poll.createdBy" ng-click="$ctrl.deletePoll(poll)" class="trash pull-right"><span class="fa fa-trash fa-2x"></span></a>
 
+  <poll data="poll" signature="$ctrl.currentUser._id"></poll>
 </div>
-
-<!-- <div class="container">
-  <div class="row">
-    <div class="col-lg-12">
-      <h1 class="page-header">Features:</h1>
-      <ul class="nav nav-tabs nav-stacked col-md-4 col-lg-4 col-sm-6" ng-repeat="thing in $ctrl.awesomeThings">
-        <li><a href="#" uib-tooltip="{{thing.info}}">{{thing.name}}</a></li>
-      </ul>
-    </div>
-  </div>
 </div>
- -->

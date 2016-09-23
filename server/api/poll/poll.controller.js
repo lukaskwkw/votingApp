@@ -80,8 +80,43 @@ export function show(req, res) {
 
 // Creates a new Poll in the DB
 export function create(req, res) {
+  req.body.createdBy = req.user.id;
   return Poll.create(req.body)
     .then(respondWithResult(res, 201))
+    .catch(handleError(res));
+}
+
+export function vote(req, res) {
+  let id = req.body.id;
+  let choice = req.body.choice;
+
+  // client IP or user._id
+  let signature = req.user ? req.user.id : req.ip;
+
+  console.log('signature', signature);
+
+  return Poll.findById(id).exec()
+    .then((doc)=> {
+
+    let isAlreadyVoted = !doc.choices.every(choice => {
+      //check all choices
+        return choice.votes.every(vote => {
+
+        //if any choice already have vote client signature then return false
+          return vote.userId !== signature
+        })
+      })
+
+
+    if (isAlreadyVoted)
+      throw 'Already voted!';
+
+
+      doc.choices[choice].votes.push({userId: signature});
+
+      return doc.save();
+    })
+    .then(respondWithResult(res))
     .catch(handleError(res));
 }
 

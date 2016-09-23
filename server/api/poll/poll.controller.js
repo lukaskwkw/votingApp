@@ -26,15 +26,14 @@ function respondWithResult(res, statusCode) {
 function patchUpdates(patches) {
   return function(entity) {
     try {
-      jsonpatch.apply(entity, patches, /*validate*/ true);
+      jsonpatch.apply(entity, patches, /*validate*/true);
     } catch(err) {
       return Promise.reject(err);
     }
-    console.log('patches', JSON.stringify(patches,null,2));
-    console.log('entity', JSON.stringify(entity,null,2));
     return entity.save();
   };
 }
+
 
 function removeEntity(res) {
   return function(entity) {

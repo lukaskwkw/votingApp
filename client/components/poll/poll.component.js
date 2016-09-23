@@ -14,21 +14,15 @@ export class PollComponent {
     };
   }
 
-  // {op:"replace", path:"/firstName", value:"Joachim" },
-  // {op:"add", path:"/lastName", value:"Wester" },
-  // {op:"add", path:"/contactDetails/phoneNumbers/0", value:{ number:"555-123" }
-
   vote() {
     let myChoice = this.myChoice.index;
-    let path = "/choices/" + this.myChoice.index + "/votes/" + ++this.chartData[myChoice] + '/userId'
+    let path = "/_doc/choices/" + myChoice + "/votes"
 
-    this.Poll.vote({
+    this.data.choices[myChoice].votes.push({userId: 'anonymous'});
+
+    this.Poll.update({
       id: this.data._id
-    }, {
-      op: "add",
-      path,
-      value: "anonymous"
-    }).$promise.then(res => {
+    }, this.data).$promise.then(res => {
       this.chartData[myChoice]++;
 
       console.log(res);

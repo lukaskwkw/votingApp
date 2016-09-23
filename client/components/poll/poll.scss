@@ -39,7 +39,7 @@
 
 label input[type="radio"] ~ i.fa.fa-circle-o{
     margin-right: 0.3em;
-    color: #c8c8c8;    display: inline;
+    color: #606060;    display: inline;
 }
 label input[type="radio"] ~ i.fa.fa-dot-circle-o{
     display: none;
@@ -49,14 +49,14 @@ label input[type="radio"]:checked ~ i.fa.fa-circle-o{
 }
 label input[type="radio"]:checked ~ i.fa.fa-dot-circle-o{
     margin-right: 0.3em;
-    color: #7AA3CC;    display: inline;
+    color: #31708f;    display: inline;
 }
 label:hover input[type="radio"] ~ i.fa {
-color: #7AA3CC;
+color: #1a5e80;
 }
 
 div[data-toggle="buttons"] label.active{
-    color: #7AA3CC;
+    color: #31708f;
 }
 
 div[data-toggle="buttons"] label {
@@ -72,9 +72,9 @@ vertical-align: top;
 cursor: pointer;
 background-color: none;
 border: 0px solid
-#c8c8c8;
+#606060;
 border-radius: 3px;
-color: #c8c8c8;
+color: #303030;
 -webkit-user-select: none;
 -moz-user-select: none;
 -ms-user-select: none;

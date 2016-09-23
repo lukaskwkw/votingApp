@@ -6,6 +6,7 @@ export default function UserResource($resource) {
   return $resource('/api/polls/:id/', {
     id: '@_id'
   }, {
-  vote: {method:'PATCH'}
+  vote: {method:'PATCH'},
+  update: { method:'PUT' }
  });
 }

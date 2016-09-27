@@ -1,12 +1,20 @@
 'use strict';
 
 export default function UserResource($resource) {
-  'ngInject';
+	'ngInject';
 
-  return $resource('/api/polls/:id/:vote', {
-    id: '@_id'
-  }, {
-  vote: {method:'POST', params: {vote: 'vote'}},
-  update: { method:'PUT' }
- });
+	return $resource('/api/polls/:id/:vote', {
+		id: '@_id',
+		choice: '@choice'
+	}, {
+		vote: {
+			method: 'POST',
+			params: {
+				vote: 'vote'
+			}
+		},
+		update: {
+			method: 'PUT'
+		}
+	});
 }

@@ -54,7 +54,7 @@ export function checkCredentials() {
         req.headers.authorization = 'Bearer ' + req.cookies.token;
       }
 
-      if (req.headers.authorization) {
+      if(req.headers.authorization) {
         return validateJwt(req, res, next);
       }
 
@@ -62,15 +62,12 @@ export function checkCredentials() {
     })
     // Attach user to request
     .use(function(req, res, next) {
-
-      if (!req.user)
+      if(!req.user)
         return next();
 
       User.findById(req.user._id).exec()
         .then(user => {
-
           if(!user) {
-
             return res.status(401).end();
           }
           req.user = user;

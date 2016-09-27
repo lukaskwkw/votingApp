@@ -10,8 +10,11 @@
 
 'use strict';
 
+var debug = require('debug')('pollcontroller');
+
 import jsonpatch from 'fast-json-patch';
 import Poll from './poll.model';
+import _ from 'lodash';
 
 function respondWithResult(res, statusCode) {
   statusCode = statusCode || 200;
@@ -26,7 +29,7 @@ function respondWithResult(res, statusCode) {
 function patchUpdates(patches) {
   return function(entity) {
     try {
-      jsonpatch.apply(entity, patches, /*validate*/true);
+      jsonpatch.apply(entity, patches, /*validate*/ true);
     } catch(err) {
       return Promise.reject(err);
     }
@@ -93,26 +96,56 @@ export function vote(req, res) {
   // client IP or user._id
   let signature = req.user ? req.user.id : req.ip;
 
-  console.log('signature', signature);
+  console.log(choice);
+  debug('before find id choice= %s', choice);
+  // pierw sprawdz czy uzytkownik nie oddal juz glosu po jego
+  // sygnaturze ip albo user.id
 
   return Poll.findById(id).exec()
-    .then((doc)=> {
+    .then(doc => {
 
-    let isAlreadyVoted = !doc.choices.every(choice => {
-      //check all choices
+      debug('signature', signature);
+
+      let isAlreadyVoted = !doc.choices.every(choice => {
+        //check all choices
         return choice.votes.every(vote => {
+          //if any choice already have vote client signature then return false
+          return vote.userId !== signature;
+        });
+      });
 
-        //if any choice already have vote client signature then return false
-          return vote.userId !== signature
-        })
-      })
+      debug('before throw isAlreadyVoted? ', isAlreadyVoted);
+      // jesli juz oddal to wywal bleda
+      if(isAlreadyVoted)
+        throw 'Already voted!';
 
+      // jesli chocice jest typu tekstowego to znajdz po aby sprawdzic
+      // czy nie zostaj juz oddany taki glos
+      // jesli nie to poszukaj po wyborze
 
-    if (isAlreadyVoted)
-      throw 'Already voted!';
+      debug('before checking string');
 
+      if(_.isString(choice)) {
+        if(!_.find(doc.choices, {
+          text: choice
+        }))
 
-      doc.choices[choice].votes.push({userId: signature});
+          doc.choices.push({
+            text: choice,
+            votes: [{
+              userId: signature
+            }]
+          });
+
+        return doc.save();
+      }
+
+      debug('after string comparision');
+        // TODO: zrobic test: 'check out of range' (wyslanie od klienta
+        // choice ktory jest np 999)
+      doc.choices[choice].votes.push({
+        userId: signature
+      });
 
       return doc.save();
     })
@@ -122,12 +155,15 @@ export function vote(req, res) {
 
 // Upserts the given Poll in the DB at the specified ID
 export function upsert(req, res) {
-  if(req.body._id) {
-    delete req.body._id;
-  }
-  return Poll.findOneAndUpdate({_id: req.params.id}, req.body, {upsert: true, setDefaultsOnInsert: true, runValidators: true}).exec()
+  return Poll.findOneAndUpdate({
+    _id: req.params.id
+  }, req.body, {
+    upsert: true,
+    setDefaultsOnInsert: true,
+    runValidators: true
+  }).exec()
 
-    .then(respondWithResult(res))
+  .then(respondWithResult(res))
     .catch(handleError(res));
 }
 

@@ -6,57 +6,59 @@ import PollResource from './poll.service';
 
 export class PollComponent {
 
-  constructor($attrs, Poll) {
+  constructor(Poll) {
     'ngInject';
     this.Poll = Poll;
+
     this.myChoice = {
       index: null
     };
 
     //check if user already perform vote
-    console.log(this.signature);
     this.isVoted = false;
 
-    this.isVoted = !this.data.choices.every(choice=>{
-      return choice.votes.every(vote=>{
-
+    this.isVoted = !this.data.choices.every(choice => {
+      return choice.votes.every(vote => {
         return vote.userId !== this.signature;
-      })
+      });
     });
+  }
 
-
+  $onInit() {
+    this.labels = this.data.choices.map(elem => {
+      return elem.text;
+    });
+    this.chartData = this.data.choices.map(elem => {
+      return elem.votes.length;
+    });
   }
 
   vote() {
     this.isVoted = true;
-    let myChoice = this.myChoice.index;
+
+    let choice = this.myChoice.index === 'custom' ? this.customChoice : this.myChoice.index;
 
     this.Poll.vote({
       id: this.data._id,
-      choice: myChoice
+      choice
     }).$promise.then(res => {
-      this.chartData[myChoice]++;
+      if(this.myChoice.index === 'custom') {
+        this.labels.push(choice);
+        this.chartData.push(1);
+      } else
+        this.chartData[choice]++;
 
       this.isVoted = true;
       console.log(res);
     }).catch(err => {
       console.log(err);
 
-      if (err.data === 'Already voted!')
+      if(err.data === 'Already voted!')
         return this.isVoted = true;
       this.isVoted = false;
-    })
+    });
   }
 
-  $onInit() {
-
-    this.labels = this.data.choices.map(elem => {
-      return elem.text;
-    })
-    this.chartData = this.data.choices.map(elem => {
-      return elem.votes.length;
-    })
-  }
 }
 
 export default angular.module('directives.poll', [])

@@ -16,6 +16,10 @@
         <label class="btn" ng-repeat="label in $ctrl.labels">
           <input type="radio" name='radioOpt' ng-model="$ctrl.myChoice.index" ng-value="$index" ><i class="fa fa-circle-o fa-2x"></i><i class="fa fa-dot-circle-o fa-2x"></i><span ng-bind="label"></span>
         </label>
+        <label for="{{$ctrl.data._id}}" ng-hide="$ctrl.isVoted" class="btn">
+          <input type="radio" name='radioOpt' ng-model="$ctrl.myChoice.index" value="custom"><i class="fa fa-circle-o fa-2x"></i><i class="fa fa-dot-circle-o fa-2x"></i>
+          <input type="text" id="{{$ctrl.data._id}}" ng-click="$ctrl.myChoice.index='custom'" ng-model="$ctrl.customChoice" value="" placeholder="Your option">
+        </label>
       </div>
     </div>
     <div class="panel-footer text-center">

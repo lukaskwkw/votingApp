@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" ng-cloak>
   <div class="col-lg-3 col-md-4 col-sm-6" ng-repeat="poll in $ctrl.polls" ng-init="expression">
 
    <a ng-show="$ctrl.currentUser._id === poll.createdBy" ng-click="$ctrl.deletePoll(poll)" class="trash pull-right"><span class="fa fa-trash fa-2x"></span></a>

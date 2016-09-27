@@ -14,7 +14,8 @@ export class PollComponent {
       index: null
     };
 
-    //check if user already perform vote
+    this.labels = [];
+
     this.isVoted = false;
 
     this.isVoted = !this.data.choices.every(choice => {
@@ -22,6 +23,7 @@ export class PollComponent {
         return vote.userId !== this.signature;
       });
     });
+
   }
 
   $onInit() {

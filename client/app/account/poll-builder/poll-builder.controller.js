@@ -4,13 +4,15 @@ export default class PollBuilderController {
 
   /*@ngInject*/
 
-  constructor($resource, Poll) {
+  constructor($resource, Poll, ngNotify) {
     this.Poll = Poll;
     this.$resource = $resource;
     this.question = '';
     this.options = [{ opt : ''}];
     this.parsedData = [{ category: 'Tech'},{category: 'Web'}]
     this.selectedCategory = this.parsedData[0];
+    this.created = false;
+    this.ngNotify = ngNotify;
   }
 
   createPoll() {
@@ -31,8 +33,17 @@ export default class PollBuilderController {
     }
 
     this.Poll.save(formData).$promise.then(res => {
+      this.ngNotify.set(`Your pool ${this.question} has been successfully created`, {
+          type: 'info',
+          duration: 5000
+      });
       console.log(res);
-    })
+    }).catch(err=> {
+      this.ngNotify.set(err.message, {
+          type: 'error',
+          duration: 5000
+      });
+    });
 
     this.submitted = true;
   }

@@ -12,7 +12,7 @@
       <hr>
       <h3 class="panel-title">{{$ctrl.data.question}}</h3>
       <hr>
-      <div class="btn-group btn-group-vertical" data-toggle="buttons">
+      <div class="choice-group btn-group btn-group-vertical" data-toggle="buttons">
         <label class="btn" ng-repeat="label in $ctrl.labels">
           <input type="radio" name='radioOpt' ng-model="$ctrl.myChoice.index" ng-value="$index" ><i class="fa fa-circle-o fa-2x"></i><i class="fa fa-dot-circle-o fa-2x"></i><span ng-bind="label"></span>
         </label>

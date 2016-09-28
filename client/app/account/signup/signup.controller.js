@@ -5,9 +5,10 @@ import angular from 'angular';
 export default class SignupController {
 
   /*@ngInject*/
-  constructor(Auth, $state) {
+  constructor(Auth, $state, ngNotify) {
     this.Auth = Auth;
     this.$state = $state;
+    this.ngNotify = ngNotify;
   }
 
   register(form) {
@@ -19,8 +20,12 @@ export default class SignupController {
         email: this.user.email,
         password: this.user.password
       })
-        .then(() => {
+        .then((user) => {
           // Account created, redirect to home
+          this.ngNotify.set(`User ${user.name} have been successfully created`, {
+              type: 'success',
+              duration: 5000
+          });
           this.$state.go('main');
         })
         .catch(err => {

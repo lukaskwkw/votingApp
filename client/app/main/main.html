@@ -1,29 +1,34 @@
 <div class="container" ng-cloak>
-
+	<!-- TODO: zamiast tego searchboxa, dac ikonke lupki
+				przy kliknieciu rozsunie sie input (searchbox)
+	-->
 	<div class="container">
 		<div class="row">
 			<div id="custom-search-input">
-				<div class="col-sm-3"></div>
-				<div class="input-group col-sm-6">
-					<input type="text" ng-model="search" class="search-query form-control" placeholder="Search" />
-					<span class="input-group-btn">
-						<button class="btn btn-primary" type="button">
-						<span class=" glyphicon glyphicon-search"></span>
-						</button>
-					</span>
+				<div class="col-sm-3">
+				<ul uib-pagination boundary-links="true" items-per-page="$ctrl.entryLimit" total-items="$ctrl.filtered.length" ng-model="$ctrl.currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></ul>
+
 				</div>
+				<div class="col-sm-6">
+					<div class="input-group">
+						<input type="text" ng-model="search" class="search-query form-control" placeholder="Search" />
+						<span class="input-group-btn">
+							<button class="btn btn-primary" type="button">
+							<span class=" glyphicon glyphicon-search"></span>
+							</button>
+						</span>
+					</div>
 			</div>
 		</div>
 	</div>
-	<br>
-
-	<div class="col-lg-3 col-md-4 col-sm-6" ng-repeat="poll in $ctrl.filtered | startFrom:($ctrl.currentPage-1)*$ctrl.entryLimit | limitTo:$ctrl.entryLimit" ng-init="expression">
-		<a ng-show="$ctrl.currentUser._id === poll.createdBy" ng-click="$ctrl.deletePoll(poll)" class="trash pull-right"><span class="fa fa-trash fa-2x"></span></a>
-	<poll data="poll" signature="$ctrl.currentUser._id"></poll>
 </div>
+<br>
+<!-- TODO: dac karuzele pod/nad paginacja z przyciskami < i >
+w taki sposob zeby widok nastepnego polla byl lekko widoczny -->
+<div class="col-lg-3 col-md-4 col-sm-6" ng-repeat="poll in $ctrl.filtered | startFrom:($ctrl.currentPage-1)*$ctrl.entryLimit | limitTo:$ctrl.entryLimit" ng-init="expression">
+	<a ng-show="$ctrl.currentUser._id === poll.createdBy" ng-click="$ctrl.deletePoll(poll)" class="trash pull-right"><span class="fa fa-trash fa-2x"></span></a>
+<poll data="poll" signature="$ctrl.currentUser._id"></poll>
+</div>
+<hr>
 
-<!-- <ul uib-pagination boundary-links="true" total-items="64" ng-model="1" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></ul> -->
-
-<!-- <pagination data-boundary-links="true" data-num-pages="noOfPages" data-current-page="currentPage" max-size="maxSize" class="pagination-small" data-previous-text="&laquo;" data-next-text="&raquo;"></pagination>
--->
 </div>

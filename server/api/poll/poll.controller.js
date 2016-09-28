@@ -106,8 +106,14 @@ export function vote(req, res) {
 
       debug('signature', signature);
 
+
+      // TODO: usunac votedChoice i dac w wyszukiwaniu po localStorage-u albo ze sciagnietej bazy
+
+      let votedChoice = null;
+
       let isAlreadyVoted = !doc.choices.every(choice => {
         //check all choices
+        votedChoice = choice.text;
         return choice.votes.every(vote => {
           //if any choice already have vote client signature then return false
           return vote.userId !== signature;
@@ -117,7 +123,7 @@ export function vote(req, res) {
       debug('before throw isAlreadyVoted? ', isAlreadyVoted);
       // jesli juz oddal to wywal bleda
       if(isAlreadyVoted)
-        throw 'Already voted!';
+        throw `Already voted on ${votedChoice}!`;
 
       // jesli chocice jest typu tekstowego to znajdz po aby sprawdzic
       // czy nie zostaj juz oddany taki glos

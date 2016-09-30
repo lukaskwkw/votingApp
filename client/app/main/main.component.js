@@ -1,23 +1,41 @@
 import angular from 'angular';
 import uiRouter from 'angular-ui-router';
 import routing from './main.routes';
+import _ from 'lodash';
 
 export class MainController {
 
   /*@ngInject*/
-  constructor(Poll, Auth, filterFilter, $scope, localStorageService) {
+  constructor(Poll, Auth, filterFilter, $scope, $rootScope, localStorageService) {
     this.Auth = Auth;
     this.Poll = Poll;
     this.$scope = $scope;
+    this.$rootScope = $rootScope;
     this.filterFilter = filterFilter;
     this.localStorageService = localStorageService;
     this.polls = [];
+    this.isMyPollsDemand = false;
+
+
+
+    this.Auth.getCurrentUser().then(user => {
+      this.currentUser = user;
+
+      if (!this.currentUser._id)
+        this.currentUser._id = null;
+    });
   }
 
   _getTimeDiff(timeStampThenInSec) {
     let now = Math.ceil(new Date().getTime() / 1000);
     let timeDiff = now - timeStampThenInSec;
     return timeDiff;
+  }
+
+  showAll() {
+      this.filtered = this.filterFilter(this.polls, this.$scope.search);
+      this.isMyPollsDemand = false;
+      this.$rootScope.$broadcast('navShowAll');
   }
 
   $onInit() {
@@ -37,6 +55,12 @@ export class MainController {
         self.$scope.$watch('search', function(term) {
           // Create self.filtered and then calculat self.noOfPages, no racing!
           self.filtered = self.filterFilter(self.polls, term);
+          if (self.isMyPollsDemand) {
+            self.filtered = _.filter(self.filtered, {createdBy: self.currentUser._id})
+            // console.log(test);
+            // term = self.currentUser._id + ' ' + term;
+            // console.log('haaha: ', term);
+          }
           self.noOfPages = Math.ceil(self.filtered.length / self.entryLimit);
         });
       }
@@ -63,21 +87,35 @@ export class MainController {
     }
 
 
-    this.Auth.getCurrentUser().then(user => {
-      this.currentUser = user;
+    this.$rootScope.$on('myPolls', (event, val)=>{
+      if (val) {
+        let user = this.Auth.getCurrentUserSync();
+        self.filtered = _.filter(self.filtered, {createdBy:  user._id})
+      }
+      else
+        this.filtered = this.filterFilter(this.polls, this.$scope.search);
 
-      if (!this.currentUser._id)
-        this.currentUser._id = null;
+      this.isMyPollsDemand = val;
+    })
+
+    this.$rootScope.$on('$stateChangeStart', function(event, next, nextParams, current) {
+      self.$rootScope.$broadcast('navShowAll');
     });
   }
 
   deletePoll(poll) {
+    let self = this;
+    console.log(poll);
     console.log(this.polls.indexOf(poll));
 
     this.Poll.delete({
       id: poll._id
-    }).$promise(() => {
-      this.polls.splice(this.polls.indexOf(poll), 1);
+    }).$promise
+    .then(() => {
+      self.localStorageService.set('timeStamp', 0);
+      self.polls.splice(self.polls.indexOf(poll), 1);
+      self.filtered.splice(self.filtered.indexOf(poll), 1);
+      // self.filtered = _.filter(self.filtered, {createdBy:  self.currentUser._id});
     });
   }
 }

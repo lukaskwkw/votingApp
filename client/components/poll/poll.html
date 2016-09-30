@@ -6,9 +6,28 @@
       </h3>
     </div>
     <div class="panel-body">
-      <canvas ng-if="$ctrl.chartData" id="pie" class="chart chart-pie"
+
+    <canvas ng-if="$ctrl.data.chartType === 1" id="pie" class="chart chart-pie"
+    chart-data="$ctrl.chartData" chart-labels="$ctrl.labels" chart-options="options">
+    </canvas>
+    <canvas ng-if="$ctrl.data.chartType === 2" id="pie" class="chart chart-bar"
+    chart-data="$ctrl.chartData" chart-labels="$ctrl.labels" chart-options="options">
+    </canvas>
+    <canvas ng-if="$ctrl.data.chartType === 3" id="pie" class="chart chart-doughnut"
+    chart-data="$ctrl.chartData" chart-labels="$ctrl.labels" chart-options="options">
+    </canvas>
+    <canvas ng-if="$ctrl.data.chartType === 4" id="pie" class="chart chart-horizontal-bar"
+    chart-data="$ctrl.chartData" chart-labels="$ctrl.labels" chart-options="options">
+    </canvas>
+    <canvas ng-if="$ctrl.data.chartType === 5" id="pie" class="chart chart-polar-area"
+    chart-data="$ctrl.chartData" chart-labels="$ctrl.labels" chart-options="options">
+    </canvas>
+
+<!--       <canvas ng-if="$ctrl.chartData" id="pie" class="chart chart-pie"
       chart-data="$ctrl.chartData" chart-labels="$ctrl.labels" chart-options="options">
-      </canvas>
+      </canvas> -->
+
+
       <hr>
       <h3 class="panel-title">{{$ctrl.data.question}}</h3>
       <hr>

@@ -31,6 +31,17 @@
   width: 200px;
 }
 
+.searchByUserIdButton {
+  position: absolute;
+  z-index: 1000;
+  top: 6px;
+  left: 5px;
+
+  >span {
+    background-color: #ddd;
+  }
+}
+
 // #custom-search-input {
 // }
 

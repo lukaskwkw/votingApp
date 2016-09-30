@@ -19,6 +19,7 @@ import _ from 'lodash';
 function respondWithResult(res, statusCode) {
   statusCode = statusCode || 200;
   return function(entity) {
+    debug('respondWithResult entity:', entity);
     if(entity) {
       return res.status(statusCode).json(entity);
     }
@@ -62,6 +63,7 @@ function handleEntityNotFound(res) {
 function handleError(res, statusCode) {
   statusCode = statusCode || 500;
   return function(err) {
+    debug('error:', err);
     res.status(statusCode).send(err);
   };
 }
@@ -84,6 +86,7 @@ export function show(req, res) {
 // Creates a new Poll in the DB
 export function create(req, res) {
   req.body.createdBy = req.user.id;
+  debug('create poll info: ', req.body);
   return Poll.create(req.body)
     .then(respondWithResult(res, 201))
     .catch(handleError(res));

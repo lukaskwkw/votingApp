@@ -21,7 +21,7 @@ export default class LoginController {
           console.log(user);
           this.ngNotify.set(`Hello ${user.name}. You have logged successfully`, {
               type: 'success',
-              duration: 5000
+              duration: 4000
           });
 
           // Logged in, redirect to home
@@ -30,7 +30,7 @@ export default class LoginController {
         .catch(err => {
           this.ngNotify.set(err.message, {
               type: 'error',
-              duration: 5000
+              duration: 4000
           });
           this.errors.login = err.message;
         });

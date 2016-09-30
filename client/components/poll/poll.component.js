@@ -6,9 +6,10 @@ import PollResource from './poll.service';
 
 export class PollComponent {
 
-  constructor(Poll, ngNotify) {
+  constructor(Poll, ngNotify, localStorageService) {
     'ngInject';
     this.Poll = Poll;
+    this.localStorageService = localStorageService;
     this.ngNotify = ngNotify;
     this.myChoice = {
       index: null
@@ -19,6 +20,9 @@ export class PollComponent {
     this.isVoted = false;
 
     this.votedChoiceIndex = null;
+
+    if (!this.data.chartType)
+      this.data.chartType = 1;
 
     this.isVoted = !this.data.choices.every((choice, index) => {
       this.votedChoiceIndex = index;
@@ -66,6 +70,7 @@ export class PollComponent {
       }
 
       this.isVoted = true;
+      this.localStorageService.set('timeStamp', 0);
       console.log(res);
 
 

@@ -11,7 +11,13 @@
 				</div>
 				<div class="col-sm-6">
 					<div class="input-group">
-						<input type="text" ng-model="search" class="search-query form-control" placeholder="Search" />
+						<input type="text" ng-model="search" class="search-query form-control" placeholder="Search">
+
+						<div ng-show="$ctrl.isMyPollsDemand" class="btn-group searchByUserIdButton" role="group" aria-label="...">
+  <span class="btn btn-xs">my polls</span>
+  <button type="button" class="btn btn-xs btn-danger" ng-click="$ctrl.showAll()"><span class="glyphicon glyphicon-remove"></span></button>
+</div>
+  </input>
 						<span class="input-group-btn">
 							<button class="btn btn-primary" type="button">
 							<span class=" glyphicon glyphicon-search"></span>

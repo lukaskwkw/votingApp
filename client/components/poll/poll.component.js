@@ -6,7 +6,7 @@ import PollResource from './poll.service';
 
 export class PollComponent {
 
-  constructor(Poll, ngNotify, localStorageService) {
+  constructor(Poll, $scope, ngNotify, localStorageService) {
     'ngInject';
     this.Poll = Poll;
     this.localStorageService = localStorageService;
@@ -14,6 +14,8 @@ export class PollComponent {
     this.myChoice = {
       index: null
     };
+
+    this.$scope = $scope;
 
     this.labels = [];
 
@@ -29,18 +31,33 @@ export class PollComponent {
       return choice.votes.every(vote => {
         return vote.userId !== this.signature;
       });
-    });
 
+      if (this.isVoted)
+        this.myChoice.index = this.votedChoiceIndex;
+
+    });
 
 /* TODO: dac zeby kolor byl na zielono podswietlany i wylaczyc mozliwosc wyboru np dac disabled na panelu czyc cos*/
 /* TODO: jak nie jest po IP (niezalogowany user) to po kliknieciu zaznaczac i wylaczac przycisk (disabled);)*/
 //       albo sciagnac IP z serwera i przefiltrowac baze w poszukiwaniu IP-ka
 /* TODO: zmniejszyc czcionke odstepy zaby pulle byly mniejsze */
-    if (this.isVoted)
-      this.myChoice.index = this.votedChoiceIndex;
+
   }
 
   $onInit() {
+
+
+    this.isVoted = !this.data.choices.every((choice, index) => {
+      this.votedChoiceIndex = index;
+      return choice.votes.every(vote => {
+        return vote.userId !== this.signature;
+      });
+    });
+
+    if (this.isVoted)
+      this.myChoice.index = this.votedChoiceIndex;
+
+
     this.labels = this.data.choices.map(elem => {
       return elem.text;
     });
@@ -70,7 +87,7 @@ export class PollComponent {
       }
 
       this.isVoted = true;
-      this.localStorageService.set('timeStamp', 0);
+      // this.localStorageService.remove('PollsDB');
       console.log(res);
 
 

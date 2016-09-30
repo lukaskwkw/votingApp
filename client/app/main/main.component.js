@@ -6,7 +6,7 @@ import _ from 'lodash';
 export class MainController {
 
   /*@ngInject*/
-  constructor(Poll, Auth, filterFilter, $scope, $rootScope, localStorageService) {
+  constructor(Poll, Auth, $state, filterFilter, $scope, $rootScope, localStorageService) {
     this.Auth = Auth;
     this.Poll = Poll;
     this.$scope = $scope;
@@ -15,14 +15,15 @@ export class MainController {
     this.localStorageService = localStorageService;
     this.polls = [];
     this.isMyPollsDemand = false;
-
-
+    this.$state = $state;
 
     this.Auth.getCurrentUser().then(user => {
       this.currentUser = user;
 
       if (!this.currentUser._id)
         this.currentUser._id = null;
+
+      this.$rootScope.$broadcast('signature', this.currentUser._id);
     });
   }
 
@@ -60,6 +61,8 @@ export class MainController {
             // console.log(test);
             // term = self.currentUser._id + ' ' + term;
             // console.log('haaha: ', term);
+            self.$rootScope.$broadcast('signature', self.currentUser._id);
+
           }
           self.noOfPages = Math.ceil(self.filtered.length / self.entryLimit);
         });
@@ -103,6 +106,12 @@ export class MainController {
     });
   }
 
+  editPoll(poll) {
+    this.$state.go('edit-poll').then(()=>{
+      this.$rootScope.$broadcast('poll', poll);
+    });
+  }
+
   deletePoll(poll) {
     let self = this;
     console.log(poll);
@@ -112,7 +121,7 @@ export class MainController {
       id: poll._id
     }).$promise
     .then(() => {
-      self.localStorageService.set('timeStamp', 0);
+      self.localStorageService.remove('PollsDB');
       self.polls.splice(self.polls.indexOf(poll), 1);
       self.filtered.splice(self.filtered.indexOf(poll), 1);
       // self.filtered = _.filter(self.filtered, {createdBy:  self.currentUser._id});

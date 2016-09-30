@@ -80,10 +80,29 @@
 //   font-size: 1.7em;
 
 // }
+.controll-pins {
+  align-items: center;
+  text-decoration: none;
+  position: absolute;
+  right: 20px;
+  top: 2px;
 
-.trash { color:rgb(209, 91, 71); }
-    .trash {
-      display: flex;
-      align-items: center;
-      text-decoration: none;
+>.pencil {
+  cursor: pointer;
+  color: #fdb45c;
+  &:hover {
+    color: darken(#fdb45c, 20%);
+  }
+}
+
+>.trash {
+  color: #d15b47;
+  cursor: pointer;
+
+
+  &:hover {
+      color: darken(#d15b47, 20%);
     }
+  }
+
+}

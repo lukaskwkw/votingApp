@@ -61,16 +61,13 @@ export default class PollBuilderController {
     console.log(this.labels);
 
     this.$scope = $scope;
-
-
-
   }
 
   addOptionClick() {
     this.options.push({
       opt: ''
     });
-    this.labels = _.map(self.options, 'opt');
+    this.labels = _.map(this.options, 'opt');
     this.chartData.push(_.random(1, 5));
   }
 
@@ -81,20 +78,9 @@ export default class PollBuilderController {
   }
 
   $onInit() {
-    self = this;
-    // this.$scope.$watch('vm.options', function(newValue, prevValue) {
-    //   self.labels = _.map(self.options, 'opt');
-    //   console.log(self.labels);
-    //   // console.log('newValue.keys', _.keys(newValue), 'prevValue.keys.length', _.keys(prevValue).length);
-    //   // if (_.keys(newValue).length > _.keys(prevValue).length) {
-    //     self.chartData.push(1);
-    //   // }
-    //   console.log(newValue);
-    //   // this.labels = _.map(this.options, 'opt');
-    // });
   }
 
-  createPoll() {
+  submitPoll() {
     this.submitted = true;
 
     let choices = this.options.map(function(elem) {
@@ -116,7 +102,7 @@ export default class PollBuilderController {
       // set timeStamp to 0 to pull db from server in order to see changes immediately
       // instead wait 30 sec for pull request to db
 
-      this.localStorageService.set('timeStamp', 0);
+      this.localStorageService.remove('PollsDB');
       this.ngNotify.set(`Your pool ${this.question} has been successfully created`, {
         type: 'info',
         duration: 4000

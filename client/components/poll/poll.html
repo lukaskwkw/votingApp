@@ -4,24 +4,28 @@
       <h3 class="panel-title">
       <span class="fa fa-line-chart"></span>{{$ctrl.data.category}}
       </h3>
+      <br>
+      <br>
+      <canvas ng-if="$ctrl.data.chartType === 1" id="pie" class="chart chart-pie"
+      chart-data="$ctrl.chartData" chart-labels="$ctrl.labels" chart-options="options">
+      </canvas>
+      <canvas ng-if="$ctrl.data.chartType === 2" id="pie" class="chart chart-bar"
+      chart-data="$ctrl.chartData" chart-labels="$ctrl.labels" chart-options="options">
+      </canvas>
+      <canvas ng-if="$ctrl.data.chartType === 3" id="pie" class="chart chart-doughnut"
+      chart-data="$ctrl.chartData" chart-labels="$ctrl.labels" chart-options="options">
+      </canvas>
+      <canvas ng-if="$ctrl.data.chartType === 4" id="pie" class="chart chart-horizontal-bar"
+      chart-data="$ctrl.chartData" chart-labels="$ctrl.labels" chart-options="options">
+      </canvas>
+      <canvas ng-if="$ctrl.data.chartType === 5" id="pie" class="chart chart-polar-area"
+      chart-data="$ctrl.chartData" chart-labels="$ctrl.labels" chart-options="options">
+      </canvas>
+
     </div>
     <div class="panel-body">
 
-    <canvas ng-if="$ctrl.data.chartType === 1" id="pie" class="chart chart-pie"
-    chart-data="$ctrl.chartData" chart-labels="$ctrl.labels" chart-options="options">
-    </canvas>
-    <canvas ng-if="$ctrl.data.chartType === 2" id="pie" class="chart chart-bar"
-    chart-data="$ctrl.chartData" chart-labels="$ctrl.labels" chart-options="options">
-    </canvas>
-    <canvas ng-if="$ctrl.data.chartType === 3" id="pie" class="chart chart-doughnut"
-    chart-data="$ctrl.chartData" chart-labels="$ctrl.labels" chart-options="options">
-    </canvas>
-    <canvas ng-if="$ctrl.data.chartType === 4" id="pie" class="chart chart-horizontal-bar"
-    chart-data="$ctrl.chartData" chart-labels="$ctrl.labels" chart-options="options">
-    </canvas>
-    <canvas ng-if="$ctrl.data.chartType === 5" id="pie" class="chart chart-polar-area"
-    chart-data="$ctrl.chartData" chart-labels="$ctrl.labels" chart-options="options">
-    </canvas>
+
 
 <!--       <canvas ng-if="$ctrl.chartData" id="pie" class="chart chart-pie"
       chart-data="$ctrl.chartData" chart-labels="$ctrl.labels" chart-options="options">
@@ -32,8 +36,8 @@
       <h3 class="panel-title">{{$ctrl.data.question}}</h3>
       <hr>
       <div class="choice-group btn-group btn-group-vertical" data-toggle="buttons">
-        <label class="btn" ng-repeat="label in $ctrl.labels">
-          <input type="radio" name='radioOpt' ng-model="$ctrl.myChoice.index" ng-value="$index" ><i class="fa fa-circle-o fa-2x"></i><i class="fa fa-dot-circle-o fa-2x"></i><span ng-bind="label"></span>
+        <label ng-disabled="$ctrl.isVoted" class="btn" ng-repeat="label in $ctrl.labels">
+          <input ng-disabled="$ctrl.isVoted" type="radio" name='radioOpt' ng-model="$ctrl.myChoice.index" ng-value="$index" ><i class="fa fa-circle-o fa-2x"></i><i class="fa fa-dot-circle-o fa-2x"></i><span ng-bind="label"></span>
         </label>
         <label for="{{$ctrl.data._id}}" ng-hide="$ctrl.isVoted" class="btn">
           <input type="radio" name='radioOpt' ng-model="$ctrl.myChoice.index" value="custom"><i class="fa fa-circle-o fa-2x"></i><i class="fa fa-dot-circle-o fa-2x"></i>

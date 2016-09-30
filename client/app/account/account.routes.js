@@ -40,5 +40,12 @@ export default function routes($stateProvider) {
       controller: 'PollBuilderController',
       controllerAs: 'vm',
       authenticate: true
+    })
+    .state('edit-poll', {
+      url: '/edit-poll',
+      template: require('./poll-builder/poll-builder.html'),
+      controller: 'PollEditController',
+      controllerAs: 'vm',
+      authenticate: true
     });
 }

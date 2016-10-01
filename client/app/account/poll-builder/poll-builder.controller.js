@@ -8,6 +8,7 @@ export default class PollBuilderController {
 
   constructor($resource, Poll, ngNotify, $scope, localStorageService) {
     this.Poll = Poll;
+    this.butttonCaption = 'Add Poll';
     this.$resource = $resource;
     this.question = '';
     this.options = [{

@@ -25,7 +25,7 @@
           <span class="option-clear glyphicon glyphicon-remove" ng-click="vm.removeOptionClick($index)" ></span>
         </div>
       </div>
-      <button type="submit" ng-disabled="vm.submitted" class="btn btn-default">Add Poll</button>
+      <button type="submit" ng-disabled="vm.submitted" class="btn btn-default" ng-bind="vm.butttonCaption"></button>
     </form>
     </div>
     <div class="col-md-6" ng-if="vm.chartData">

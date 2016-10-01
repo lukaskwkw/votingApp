@@ -7,6 +7,7 @@ export default class PollEditController {
   /*@ngInject*/
 
   constructor($resource, $state, Poll, ngNotify, $scope, $rootScope, localStorageService) {
+    this.butttonCaption = 'Update';
     this.$state = $state;
     this.$scope = $scope;
     this.pollToEdit = null;

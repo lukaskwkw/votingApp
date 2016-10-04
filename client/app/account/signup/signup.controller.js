@@ -5,10 +5,11 @@ import angular from 'angular';
 export default class SignupController {
 
   /*@ngInject*/
-  constructor(Auth, $state, ngNotify) {
+  constructor(Auth, $timeout, $state, ngNotify) {
     this.Auth = Auth;
     this.$state = $state;
     this.ngNotify = ngNotify;
+    this.$timeout = $timeout;
   }
 
   register(form) {
@@ -37,6 +38,11 @@ export default class SignupController {
             this.errors[field] = error.message;
           });
         });
+    } else {
+      this.$timeout(()=>{
+        this.submitted = false;
+      }, 2300);
+      return;
     }
   }
 }

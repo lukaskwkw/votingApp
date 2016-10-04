@@ -1,32 +1,50 @@
 <div class="container">
   <div class="row">
-  <div class="col-md-6">
-    <form name="form" ng-submit="vm.submitPoll()" novalidate>
-      <div class="form-group">
-        <label for="pollTitle">
-          Poll Title
-        </label>
-        <input class="form-control" placeholder="Poll question i.e. Favourite music band?" ng-model="vm.question" name="question" id="pollTitle" />
-        <hr>
-        <label>Select category {{vm.selectedCategory}}</label>
-        <select class="form-control" ng-model="vm.selectedCategory" ng-options="category for category in vm.categories" name="categories">
-          <!-- <option ng-repeat="data in vm.parsedData"  ng-bind="data.category"></option> -->
-        </select>
-      </div>
-      <div class="form-group">
-        <hr>
-        <label for="pollOptions">
-          Options:
-        </label>
-        <a class="btn btn-xs btn-primary" ng-click="vm.addOptionClick()"><span class="glyphicon glyphicon-plus-sign"></span>Add option</a>
-        <div class="poll-option" ng-model="options" name="options" ng-repeat="option in vm.options">
-          <input class="form-control" placeholder="Option {{$index+1}}..." ng-model="option.opt"/>
-          <!-- <input class="form-control" ng-model="options[$index]"  /> -->
-          <span class="option-clear glyphicon glyphicon-remove" ng-click="vm.removeOptionClick($index)" ></span>
+    <div class="col-md-6">
+      <form name="form" ng-submit="vm.submitPoll(form)" novalidate>
+        <div class="form-group" ng-class="{ 'has-success': form.question.$valid && vm.submitted,
+          'has-error': form.question.$invalid && vm.submitted }">
+          <label for="pollTitle">
+            Poll Title
+          </label>
+          <input class="form-control" placeholder="Poll question i.e. Favourite music band?" ng-model="vm.question" name="question" id="pollTitle" required />
+          <p class="help-block" ng-show="form.question.$error.required && vm.submitted">
+            A question is required
+          </p>
         </div>
-      </div>
-      <button type="submit" ng-disabled="vm.submitted" class="btn btn-default" ng-bind="vm.butttonCaption"></button>
-    </form>
+
+        <div class="form-group"><hr>
+          <label>Select category</label>
+          <select  ng-change="vm.categoryChange()" class="form-control" ng-model="vm.selectedCategory" ng-options="category for category in vm.categories" name="categories">
+            <!-- <option ng-repeat="data in vm.parsedData"  ng-bind="data.category"></option> -->
+          </select>
+          <div  ng-class="{ 'has-success': vm.newCategory,
+          'has-error': !vm.newCategory }" ng-show="vm.selectedCategory === vm.categories[vm.categories.length-1]">
+            <input class="form-control" placeholder="New category" ng-model="vm.newCategory"/>
+            <p class="help-block" ng-show="!vm.newCategory">Category can't be blank</p>
+          </div>
+        </div>
+
+        <div class="form-group" >
+          <hr>
+          <label for="pollOptions">
+            Options:
+          </label>
+          <a class="btn btn-xs btn-primary" ng-click="vm.addOptionClick()"><span class="glyphicon glyphicon-plus-sign"></span>Add option</a>
+          <div ng-class="{ 'has-success': form.option{{$index}}.$valid && vm.submitted,
+          'has-error': form.option{{$index}}.$invalid && vm.submitted }" ng-model="options" ng-repeat="option in vm.options">
+            <div class="poll-option">
+              <input class="form-control" name="option{{$index}}" placeholder="Option {{$index+1}}..." ng-model="option.opt" required />
+              <span class="option-clear glyphicon glyphicon-remove" ng-click="vm.removeOptionClick($index)" ></span>
+            </div>
+            <p class="help-block" ng-show="form.option{{$index}}.$error.required && vm.submitted">This option is required
+            </p>
+          </div>
+
+        </div>
+
+        <button type="submit" ng-disabled="vm.submitted" class="btn btn-default" ng-bind="vm.butttonCaption"></button>
+      </form>
     </div>
     <div class="col-md-6" ng-if="vm.chartData">
       <canvas ng-show="vm.chartType.id === 1" id="pie" class="chart chart-pie"

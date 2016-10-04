@@ -6,12 +6,15 @@ export default class PollBuilderController {
 
   /*@ngInject*/
 
-  constructor($resource, Poll, $rootScope, ngNotify, $scope, localStorageService) {
+  constructor($resource, $timeout, Poll, $rootScope, ngNotify, $scope, localStorageService) {
     this.Poll = Poll;
+    this.$timeout = $timeout;
     this.butttonCaption = 'Add Poll';
     this.$resource = $resource;
     this.question = '';
+    this.newCategory = null;
     this.$rootScope = $rootScope;
+    this.$scope = $scope;
     this.options = [{
       opt: ''
     }];
@@ -35,7 +38,6 @@ export default class PollBuilderController {
 
     this.chartType = this.chartTypes[0];
 
-    // TODO: dodanie opcji tworzenia nowej kategorii jesli zadna nam nie pasuje
     this.categories = [];
     if (this.$rootScope.categories) {
       this.categories = this.$rootScope.categories;
@@ -44,32 +46,25 @@ export default class PollBuilderController {
       this.categories = this.localStorageService.get('categories');
 
     if (!this.categories) {
-      this.Poll.query().$promise.then(resPolls => {
+      this.Poll.$resource.query().$promise.then(resPolls => {
         this.categories = _.uniq(_.map(resPolls, 'category'));
-        this.$rootScope.categories = categories;
-        this.localStorageService.set('categories', categories);
+        this.$rootScope.categories = this.categories;
+        this.localStorageService.set('categories', this.categories);
       });
     }
     }
-    // TODO: a jesli nie ma localDB to sciagnij albo zrobic tak zeby uzytkownik mogl sam wybrac kategorie
 
-    this.categories.push('Add new...')
+    this.categories.push('Add new...');
     console.log(this.categories);
 
-    this.parsedData = [{
-      category: 'Tech'
-    }, {
-      category: 'Web'
-    }]
     this.selectedCategory = this.categories[0];
     this.created = false;
     this.ngNotify = ngNotify;
     // this.labels = this.options.
     this.labels = _.map(this.options, 'opt');
-    this.chartData = [_.random(1, 5)]
+    this.chartData = [_.random(1, 5)];
     console.log(this.labels);
 
-    this.$scope = $scope;
   }
 
   addOptionClick() {
@@ -89,8 +84,25 @@ export default class PollBuilderController {
   $onInit() {
   }
 
-  submitPoll() {
+  submitPoll(form) {
     this.submitted = true;
+
+    if(!form.$valid) {
+      this.$timeout(()=>{
+        this.submitted = false;
+      }, 2300);
+      return;
+    }
+
+    if (this.selectedCategory === this.categories[this.categories.length-1])
+      if (!this.newCategory) {
+        this.submitted = false;
+        return;
+      }
+        else
+        this.selectedCategory = this.newCategory;
+
+    // TODO: sprawdzic jesli wybrana opcjia New category i jesli jest pusty input to niedopuscic do wyslania
 
     let choices = this.options.map(function(elem) {
       return {
@@ -106,12 +118,19 @@ export default class PollBuilderController {
       chartType: this.chartType.id
     }
 
-    this.Poll.save(formData).$promise.then(res => {
+    this.Poll.$resource.save(formData).$promise.then(res => {
 
-      // set timeStamp to 0 to pull db from server in order to see changes immediately
-      // instead wait 30 sec for pull request to db
+      if (this.newCategory)
+        this.$rootScope.categories.push(this.newCategory);
 
-      this.localStorageService.remove('PollsDB');
+      let poll = formData;
+
+      //set properties from response for storage in Poll service
+      poll.createdBy = res.createdBy;
+      poll._id = res._id;
+
+      //  TODO: z tym serwisem this.Poll mozna by zrobic setter ze jak nie ma polli to niech pobierze baze danych
+      this.Poll.polls.push(poll);
       this.ngNotify.set(`Your pool ${this.question} has been successfully created`, {
         type: 'info',
         duration: 4000

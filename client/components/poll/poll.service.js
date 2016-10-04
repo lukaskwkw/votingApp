@@ -1,20 +1,22 @@
 'use strict';
 
-export default function UserResource($resource) {
+export default function PollResource($resource) {
 	'ngInject';
-
-	return $resource('/api/polls/:id/:vote', {
-		id: '@_id',
-		choice: '@choice'
-	}, {
-		vote: {
-			method: 'POST',
-			params: {
-				vote: 'vote'
+	//storage for polls
+	var polls = null;
+	var $resource = $resource('/api/polls/:id/:vote', {
+			id: '@_id',
+			choice: '@choice'
+		}, {
+			vote: {
+				method: 'POST',
+				params: {
+					vote: 'vote'
+				}
+			},
+			update: {
+				method: 'PUT'
 			}
-		},
-		update: {
-			method: 'PUT'
-		}
-	});
+		});
+	return  {polls, $resource};
 }

@@ -14,6 +14,7 @@ import http from 'http';
 mongoose.connect(config.mongo.uri, config.mongo.options);
 mongoose.connection.on('error', function(err) {
   console.error('MongoDB connection error: ' + err);
+  // TODO: pobawic sie tutaj zeby nie wywalalo apki przy bledzie
   process.exit(-1); // eslint-disable-line no-process-exit
 });
 

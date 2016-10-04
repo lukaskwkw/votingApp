@@ -13,7 +13,8 @@ export class MainController {
     this.$rootScope = $rootScope;
     this.filterFilter = filterFilter;
     this.localStorageService = localStorageService;
-    this.polls = [];
+    console.log('constructor');
+    console.log('Poll service polls', this.Poll.polls);
     this.isMyPollsDemand = false;
     this.$state = $state;
     self = this;
@@ -61,7 +62,7 @@ export class MainController {
   }
 
   showAll() {
-      this.filtered = this.filterFilter(this.polls, this.$scope.search);
+      this.filtered = this.filterFilter(self.Poll.polls, this.$scope.search);
       this.noOfPages = Math.ceil(this.filtered.length / this.entryLimit);
       this.isMyPollsDemand = false;
       this.$rootScope.$broadcast('navShowAll');
@@ -83,7 +84,7 @@ export class MainController {
 
         self.$scope.$watch('search', function(term) {
           // Create self.filtered and then calculat self.noOfPages, no racing!
-          self.filtered = self.filterFilter(self.polls, term);
+          self.filtered = self.filterFilter(self.Poll.polls, term);
           if (self.isMyPollsDemand) {
             self.filtered = _.filter(self.filtered, {createdBy: self.currentUser._id})
             self.$rootScope.$broadcast('signature', self.currentUser._id);
@@ -92,13 +93,27 @@ export class MainController {
         });
       }
 
-      this.Poll.query().$promise.then(res => {
-        this.polls = res;
-        let categories = _.uniq(_.map(this.polls, 'category'));
+      if (!this.Poll.polls)
+      this.Poll.$resource.query().$promise.then(res => {
+        this.Poll.polls = res;
+        console.log('pobrano polle');
+        console.log(this.Poll.polls);
+        // this.polls = res;
+        let categories = _.uniq(_.map(this.Poll.polls, 'category'));
         this.$rootScope.categories = categories;
         this.localStorageService.set('categories', categories);
+        // this.$rootScope.polls = this.polls;
         _setWatchOnSearch();
       });
+    else  {
+      // this.polls = this.$rootScope.polls;
+      // this.polls = this.Poll.polls;
+      let categories = _.uniq(_.map(this.Poll.polls, 'category'));
+      this.$rootScope.categories = categories;
+      this.localStorageService.set('categories', categories);
+        _setWatchOnSearch();
+
+    }
 
     this.$rootScope.$on('myPolls', (event, val)=>{
       if (val) {
@@ -106,11 +121,11 @@ export class MainController {
         self.filtered = _.filter(self.filtered, {createdBy:  user._id})
       }
       else
-        this.filtered = this.filterFilter(this.polls, this.$scope.search);
+        self.filtered = self.filterFilter(self.Poll.polls, self.$scope.search);
 
       self.noOfPages = Math.ceil(self.filtered.length / self.entryLimit);
 
-      this.isMyPollsDemand = val;
+      self.isMyPollsDemand = val;
     })
 
     this.$rootScope.$on('$stateChangeStart', function(event, next, nextParams, current) {
@@ -131,14 +146,12 @@ export class MainController {
 
   deletePoll(poll) {
     let self = this;
-    console.log(poll);
-    console.log(this.polls.indexOf(poll));
 
-    this.Poll.delete({
+    this.Poll.$resource.delete({
       id: poll._id
     }).$promise
     .then(() => {
-      self.polls.splice(self.polls.indexOf(poll), 1);
+      self.Poll.polls.splice(self.Poll.polls.indexOf(poll), 1);
       self.filtered.splice(self.filtered.indexOf(poll), 1);
       self.noOfPages = Math.ceil(self.filtered.length / self.entryLimit);
     });

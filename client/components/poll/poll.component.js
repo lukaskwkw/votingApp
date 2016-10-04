@@ -73,8 +73,9 @@ export class PollComponent {
     if ($index !== undefined)
       choice = $index;
 
+    console.log('data', this.data);
     console.log(choice);
-    this.Poll.vote({
+    this.Poll.$resource.vote({
       id: this.data._id,
       choice
     }).$promise.then(res => {

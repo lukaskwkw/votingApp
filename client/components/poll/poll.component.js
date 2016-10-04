@@ -66,11 +66,14 @@ export class PollComponent {
     });
   }
 
-  vote() {
+  vote($index) {
     this.isVoted = true;
 
     let choice = this.myChoice.index === 'custom' ? this.customChoice : this.myChoice.index;
+    if ($index !== undefined)
+      choice = $index;
 
+    console.log(choice);
     this.Poll.vote({
       id: this.data._id,
       choice
@@ -79,9 +82,13 @@ export class PollComponent {
       var choiceText = '';
       if(this.myChoice.index === 'custom') {
         choiceText = choice;
+        console.log(choice);
+        this.data.choices.push({text: choice, votes: [{userId: this.signature}]});
         this.labels.push(choice);
         this.chartData.push(1);
+        this.myChoice.index = this.labels.length-1;
       } else {
+        this.data.choices[choice].votes.push({userId: this.signature});
         choiceText = this.labels[choice];
         this.chartData[choice]++;
       }

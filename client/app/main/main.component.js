@@ -16,6 +16,33 @@ export class MainController {
     this.polls = [];
     this.isMyPollsDemand = false;
     this.$state = $state;
+    self = this;
+
+
+    // TODO: check if all votes have been perfomed
+    // if so navigate to next page if avialiable or to page where votes
+    // have been checked
+    // only for logged user (for now)
+
+    // $scope.$on('vote', (event, val)=>{
+    //   if (this.currentUser._id === null)
+    //     return;
+
+    //   this.filt
+
+    // });
+
+
+    $scope.$on('keydown', function( msg, code ) {
+      self.noOfPages = Math.ceil(self.filtered.length / self.entryLimit);
+      if (code === 39 && self.currentPage !== self.noOfPages) {
+        self.currentPage = self.currentPage + 1
+      }
+      if (code === 37 && self.currentPage !== 1) {
+        self.currentPage = self.currentPage - 1
+      }
+      self.$rootScope.$apply();
+    });
 
     this.Auth.getCurrentUser().then(user => {
       this.currentUser = user;
@@ -35,6 +62,7 @@ export class MainController {
 
   showAll() {
       this.filtered = this.filterFilter(this.polls, this.$scope.search);
+      this.noOfPages = Math.ceil(this.filtered.length / this.entryLimit);
       this.isMyPollsDemand = false;
       this.$rootScope.$broadcast('navShowAll');
   }
@@ -51,44 +79,26 @@ export class MainController {
         self.entryLimit = 4; //max rows for data table
 
         /* init pagination with self.list */
-        self.noOfPages = Math.ceil(self.polls.length / self.entryLimit);
+        self.noOfPages = Math.ceil(self.filtered.length / self.entryLimit);
 
         self.$scope.$watch('search', function(term) {
           // Create self.filtered and then calculat self.noOfPages, no racing!
           self.filtered = self.filterFilter(self.polls, term);
           if (self.isMyPollsDemand) {
             self.filtered = _.filter(self.filtered, {createdBy: self.currentUser._id})
-            // console.log(test);
-            // term = self.currentUser._id + ' ' + term;
-            // console.log('haaha: ', term);
             self.$rootScope.$broadcast('signature', self.currentUser._id);
-
           }
           self.noOfPages = Math.ceil(self.filtered.length / self.entryLimit);
         });
       }
 
-      // TODO: sprawdzic ifem czy juz cos zostalo zapisane w localStorag-u
-      // jesli tak to zabrac z tamtad i przypisac do this.polls, o ile czas od tamtej pory nie przekroczyl
-      // 30-60 sek (czas spradzac diffem Date.time czy cos takiego)
-      // w przeciwnych wypadkach pobrac baze
-
-    let localDB = this.localStorageService.get('PollsDB');
-    var timeDiff = +this._getTimeDiff(this.localStorageService.get('timeStamp'));
-
-    if (timeDiff > 30 || !localDB) {
       this.Poll.query().$promise.then(res => {
         this.polls = res;
-        this.localStorageService.set('PollsDB', this.polls);
-
+        let categories = _.uniq(_.map(this.polls, 'category'));
+        this.$rootScope.categories = categories;
+        this.localStorageService.set('categories', categories);
         _setWatchOnSearch();
-        this.localStorageService.set('timeStamp', Math.ceil(new Date().getTime() / 1000));
       });
-    } else {
-      this.polls = this.localStorageService.get('PollsDB');
-      _setWatchOnSearch();
-    }
-
 
     this.$rootScope.$on('myPolls', (event, val)=>{
       if (val) {
@@ -98,12 +108,19 @@ export class MainController {
       else
         this.filtered = this.filterFilter(this.polls, this.$scope.search);
 
+      self.noOfPages = Math.ceil(self.filtered.length / self.entryLimit);
+
       this.isMyPollsDemand = val;
     })
 
     this.$rootScope.$on('$stateChangeStart', function(event, next, nextParams, current) {
       self.$rootScope.$broadcast('navShowAll');
     });
+  }
+
+
+  nextClick() {
+    this.currentPage = this.currentPage + 1;
   }
 
   editPoll(poll) {
@@ -121,10 +138,9 @@ export class MainController {
       id: poll._id
     }).$promise
     .then(() => {
-      self.localStorageService.remove('PollsDB');
       self.polls.splice(self.polls.indexOf(poll), 1);
       self.filtered.splice(self.filtered.indexOf(poll), 1);
-      // self.filtered = _.filter(self.filtered, {createdBy:  self.currentUser._id});
+      self.noOfPages = Math.ceil(self.filtered.length / self.entryLimit);
     });
   }
 }
@@ -144,6 +160,15 @@ export default angular.module('fccVotingApp2App.main', [uiRouter])
   .component('main', {
     template: require('./main.html'),
     controller: MainController
+  })
+  // added to body in _index.html
+  .directive('keyTrap', function() {
+    return function( scope, elem ) {
+      elem.bind('keydown', function( event ) {
+        if (event.keyCode === 37 || event.keyCode === 39)
+          scope.$broadcast('keydown', event.keyCode );
+      });
+    };
   })
   .filter('startFrom', startFrom)
   .name;

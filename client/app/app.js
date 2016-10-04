@@ -61,6 +61,8 @@ angular.module('fccVotingApp2App', [ngChartjs, 'ngNotify', ngCookies, ngResource
     });
   });
 
+
+
 angular.element(document)
   .ready(() => {
     angular.bootstrap(document, ['fccVotingApp2App'], {

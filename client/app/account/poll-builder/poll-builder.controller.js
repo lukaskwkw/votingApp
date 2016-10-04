@@ -6,11 +6,12 @@ export default class PollBuilderController {
 
   /*@ngInject*/
 
-  constructor($resource, Poll, ngNotify, $scope, localStorageService) {
+  constructor($resource, Poll, $rootScope, ngNotify, $scope, localStorageService) {
     this.Poll = Poll;
     this.butttonCaption = 'Add Poll';
     this.$resource = $resource;
     this.question = '';
+    this.$rootScope = $rootScope;
     this.options = [{
       opt: ''
     }];
@@ -36,15 +37,22 @@ export default class PollBuilderController {
 
     // TODO: dodanie opcji tworzenia nowej kategorii jesli zadna nam nie pasuje
     this.categories = [];
-    let localDB = this.localStorageService.get('PollsDB');
+    if (this.$rootScope.categories) {
+      this.categories = this.$rootScope.categories;
+    }
+    else {
+      this.categories = this.localStorageService.get('categories');
 
+    if (!this.categories) {
+      this.Poll.query().$promise.then(resPolls => {
+        this.categories = _.uniq(_.map(resPolls, 'category'));
+        this.$rootScope.categories = categories;
+        this.localStorageService.set('categories', categories);
+      });
+    }
+    }
     // TODO: a jesli nie ma localDB to sciagnij albo zrobic tak zeby uzytkownik mogl sam wybrac kategorie
 
-    if (localDB)
-      _.forEach(localDB, elem => {
-        if (this.categories.indexOf(elem.category) === -1)
-          this.categories.push(elem.category);
-      });
     this.categories.push('Add new...')
     console.log(this.categories);
 

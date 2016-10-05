@@ -13,8 +13,6 @@ export class MainController {
     this.$rootScope = $rootScope;
     this.filterFilter = filterFilter;
     this.localStorageService = localStorageService;
-    console.log('constructor');
-    console.log('Poll service polls', this.Poll.polls);
     this.isMyPollsDemand = false;
     this.$state = $state;
     self = this;
@@ -96,8 +94,6 @@ export class MainController {
       if (!this.Poll.polls)
       this.Poll.$resource.query().$promise.then(res => {
         this.Poll.polls = res;
-        console.log('pobrano polle');
-        console.log(this.Poll.polls);
         // this.polls = res;
         let categories = _.uniq(_.map(this.Poll.polls, 'category'));
         this.$rootScope.categories = categories;

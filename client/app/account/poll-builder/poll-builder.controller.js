@@ -55,7 +55,6 @@ export default class PollBuilderController {
     }
 
     this.categories.push('Add new...');
-    console.log(this.categories);
 
     this.selectedCategory = this.categories[0];
     this.created = false;
@@ -63,7 +62,6 @@ export default class PollBuilderController {
     // this.labels = this.options.
     this.labels = _.map(this.options, 'opt');
     this.chartData = [_.random(1, 5)];
-    console.log(this.labels);
 
   }
 
@@ -135,7 +133,6 @@ export default class PollBuilderController {
         type: 'info',
         duration: 4000
       });
-      console.log(res);
     }).catch(err => {
       this.submitted = false;
 

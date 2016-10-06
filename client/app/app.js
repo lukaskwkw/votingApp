@@ -27,6 +27,7 @@ import account from './account';
 import admin from './admin';
 import navbar from '../components/navbar/navbar.component';
 import footer from '../components/footer/footer.component';
+import affix from '../components/affix';
 import pollComponent from '../components/poll/poll.component';
 import main from './main/main.component';
 import constants from './app.constants';
@@ -35,7 +36,7 @@ import ngChartjs from '../../node_modules/angular-chart.js/dist/angular-chart.mi
 import ngNotify from '../../node_modules/ng-notify/dist/ng-notify.min.js';
 import './app.scss';
 
-angular.module('fccVotingApp2App', [ngChartjs, 'ngNotify', ngCookies, ngResource, ngSanitize, localStorage, uiRouter, uiBootstrap, _Auth,
+angular.module('fccVotingApp2App', [ngChartjs, affix, 'ngNotify', ngCookies, ngResource, ngSanitize, localStorage, uiRouter, uiBootstrap, _Auth,
     account, admin, navbar, footer, pollComponent, main, constants, util
   ])
   .config(routeConfig)

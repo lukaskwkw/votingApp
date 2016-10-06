@@ -8,6 +8,7 @@ export class NavbarComponent {
   constructor(Auth, $rootScope, $state) {
     'ngInject';
 
+    this.isCollapsed = true;
     this.isLoggedIn = Auth.isLoggedInSync;
     this.isAdmin = Auth.isAdminSync;
     this.getCurrentUser = Auth.getCurrentUserSync;

@@ -31,35 +31,12 @@
   overflow-x: hidden;
 }
 
-// .choice-group::-webkit-scrollbar {
-//     width: 1em;
-//     // cursor: pointer;
-// }
-
-// .choice-group::-webkit-scrollbar-track {
-//     // cursor: pointer;
-
-//     // -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
-// }
-
-// .choice-group::-webkit-scrollbar-thumb {
-//     // cursor: pointer;
-//   background-color: #ddd;
-//   outline: 1px solid #aaa;
-// }
-
-// .panel-body .radio, .panel-body .checkbox {
-//     margin-top: 0px;
-//     margin-bottom: 0px;
-// }
-
-// .panel-body .list-group {
-//     margin-bottom: 0;
-// }
-
 .margin-bottom-none {
     margin-bottom: 0;
 }
+
+
+
 
 // .panel-body .radio label, .panel-body .checkbox label {
 //     display: block;
@@ -118,3 +95,36 @@ div[data-toggle="buttons"] label:active, div[data-toggle="buttons"] label.active
 -webkit-box-shadow: none;
 box-shadow: none;
 }
+
+/* Animation for ng-repeat */
+
+/*
+.anim.ng-enter-stagger {
+  200ms will be applied between each sucessive enter operation
+  -webkit-transition-delay:0.5s;
+  transition-delay:0.5s;
+
+  this is here to avoid accidental CSS inheritance
+  -webkit-transition-duration:0;
+  transition-duration:0;
+}
+
+.anim.ng-enter,
+.anim.ng-leave
+{
+    -webkit-transition: 800ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+    -moz-transition: 800ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+    -ms-transition: 800ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+    -o-transition: 800ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+    transition: 800ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+}
+
+.anim.ng-enter.ng-enter-active,
+.anim.ng-leave {
+    opacity: 1;
+}
+
+.anim.ng-leave.ng-leave-active,
+.anim.ng-enter {
+    opacity: 0;
+} */

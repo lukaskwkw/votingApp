@@ -27,7 +27,7 @@
 w taki sposob zeby widok nastepnego polla byl lekko widoczny -->
 <a ng-hide="$ctrl.currentPage===1" ng-click="$ctrl.currentPage = $ctrl.currentPage - 1;" class="prev">&#10094;</a>
 <div class="row">
-	<div class="col-lg-3 col-md-4 col-sm-6" ng-repeat="poll in $ctrl.filtered | startFrom:($ctrl.currentPage-1)*$ctrl.entryLimit | limitTo:$ctrl.entryLimit" ng-init="expression">
+	<div  class="col-lg-3 col-md-4 col-sm-6 animate" ng-repeat="poll in $ctrl.filtered | startFrom:($ctrl.currentPage-1)*$ctrl.entryLimit | limitTo:$ctrl.entryLimit" ng-init="expression">
 	<div ng-show="$ctrl.currentUser._id === poll.createdBy" class="controll-pins">
 		<span  ng-click="$ctrl.editPoll(poll)" class="pencil fa fa-pencil-square-o fa-2x glyphicon glyphicon-pencil"></span>
 		<span  ng-click="$ctrl.deletePoll(poll)" class="trash fa fa-trash fa-2x"></span>

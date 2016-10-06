@@ -1,7 +1,7 @@
 'use strict';
 
 import angular from 'angular';
-// import ngAnimate from 'angular-animate';
+import ngAnimate from 'angular-animate';
 import ngCookies from 'angular-cookies';
 import ngResource from 'angular-resource';
 import ngSanitize from 'angular-sanitize';
@@ -36,7 +36,7 @@ import ngChartjs from '../../node_modules/angular-chart.js/dist/angular-chart.mi
 import ngNotify from '../../node_modules/ng-notify/dist/ng-notify.min.js';
 import './app.scss';
 
-angular.module('fccVotingApp2App', [ngChartjs, affix, 'ngNotify', ngCookies, ngResource, ngSanitize, localStorage, uiRouter, uiBootstrap, _Auth,
+angular.module('fccVotingApp2App', [ngChartjs, ngAnimate, affix, 'ngNotify', ngCookies, ngResource, ngSanitize, localStorage, uiRouter, uiBootstrap, _Auth,
     account, admin, navbar, footer, pollComponent, main, constants, util
   ])
   .config(routeConfig)

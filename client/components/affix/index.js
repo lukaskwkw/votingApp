@@ -16,7 +16,7 @@ export default angular.module('fccVotingApp2App.affix', [])
                   // console.log($window.pageYOffset);
                   // console.log(attr.offsettop);
 
-                  if ($window.pageYOffset > topOffset + attr.offsettop) {
+                  if ($window.pageYOffset > topOffset) {
                       $element.css('position', 'fixed');
                       $element.css('top', '0px');
                   } else {

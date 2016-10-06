@@ -54,7 +54,7 @@
   margin-top: -22px;
   padding: 16px;
   color: #444;
-  background-color: rgba(220,220,220,0.7);
+  background-color: rgba(220,220,220,0.55);
   font-weight: bold;
   font-size: 18px;
   transition: 0.6s ease;
@@ -118,5 +118,38 @@
   display: inline-block;
   margin: 0;
   margin-top: -20px;
+}
+
+
+/* Animation for ng-repeat */
+
+.animate.ng-enter-stagger {
+  /* 200ms will be applied between each sucessive enter operation */
+  -webkit-transition-delay:0.5s;
+  transition-delay:0.5s;
+
+  /* this is here to avoid accidental CSS inheritance */
+  -webkit-transition-duration:0;
+  transition-duration:0;
+}
+
+.animate.ng-enter,
+.animate.ng-leave
+{
+    -webkit-transition: 800ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+    -moz-transition: 800ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+    -ms-transition: 800ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+    -o-transition: 800ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+    transition: 800ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+}
+
+.animate.ng-enter.ng-enter-active,
+.animate.ng-leave {
+    opacity: 1;
+}
+
+.animate.ng-leave.ng-leave-active,
+.animate.ng-enter {
+    opacity: 0;
 }
 

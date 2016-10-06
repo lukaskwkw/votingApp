@@ -69,9 +69,18 @@ function handleError(res, statusCode) {
 }
 
 // Gets a list of Polls
+
+function _assignClientIpAndRespond(req, res) {
+  return function (entity) {
+    // entityWithIp is array with single object as Angular $resource expecting array
+    var entityWithIp = [{ polls: entity, ip: req.ip}];
+    respondWithResult(res)(entityWithIp);
+  }
+}
+
 export function index(req, res) {
   return Poll.find().exec()
-    .then(respondWithResult(res))
+    .then(_assignClientIpAndRespond(req,res))
     .catch(handleError(res));
 }
 

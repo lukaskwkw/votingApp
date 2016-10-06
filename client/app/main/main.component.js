@@ -47,7 +47,7 @@ export class MainController {
       this.currentUser = user;
 
       if (!this.currentUser._id)
-        this.currentUser._id = null;
+        this.currentUser._id = this.$rootScope.ip;
 
       this.$rootScope.$broadcast('signature', this.currentUser._id);
     });
@@ -93,12 +93,20 @@ export class MainController {
 
       if (!this.Poll.polls)
       this.Poll.$resource.query().$promise.then(res => {
-        this.Poll.polls = res;
+        // response is array with single object as resource expecting to be array
+        this.Poll.polls = res[0].polls;
+        this.$rootScope.ip = res[0].ip;
         // this.polls = res;
         let categories = _.uniq(_.map(this.Poll.polls, 'category'));
         this.$rootScope.categories = categories;
         this.localStorageService.set('categories', categories);
         // this.$rootScope.polls = this.polls;
+
+        if (!this.currentUser._id) {
+          this.currentUser._id = this.$rootScope.ip;
+        }
+          this.$rootScope.$broadcast('signature', this.currentUser._id);
+
         _setWatchOnSearch();
       });
     else  {

@@ -6,11 +6,13 @@ import PollResource from './poll.service';
 
 export class PollComponent {
 
-  constructor(Poll, $scope, ngNotify, localStorageService) {
+  constructor(Poll, Auth, $scope, ngNotify, localStorageService) {
     'ngInject';
     this.Poll = Poll;
     this.localStorageService = localStorageService;
     this.ngNotify = ngNotify;
+    this.Auth = Auth;
+    this.isLoggedIn = this.Auth.isLoggedInSync;
     this.myChoice = {
       index: null
     };

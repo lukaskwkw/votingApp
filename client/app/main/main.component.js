@@ -6,17 +6,17 @@ import _ from 'lodash';
 export class MainController {
 
   /*@ngInject*/
-  constructor(Poll, Auth, $state, filterFilter, $scope, $rootScope, localStorageService) {
+  constructor(Poll, Auth, $stateParams, $state, filterFilter, $scope, $rootScope, localStorageService) {
     this.Auth = Auth;
     this.Poll = Poll;
     this.$scope = $scope;
+    this.$stateParams = $stateParams;
     this.$rootScope = $rootScope;
     this.filterFilter = filterFilter;
     this.localStorageService = localStorageService;
     this.isMyPollsDemand = false;
     this.$state = $state;
     self = this;
-
 
     // TODO: check if all votes have been perfomed
     // if so navigate to next page if avialiable or to page where votes
@@ -87,6 +87,10 @@ export class MainController {
             self.filtered = _.filter(self.filtered, {createdBy: self.currentUser._id})
             self.$rootScope.$broadcast('signature', self.currentUser._id);
           }
+          if (self.$stateParams.id) {
+            self.filtered = _.filter(self.filtered, {_id: self.$stateParams.id})
+            // this.$scope.$apply();
+          }
           self.noOfPages = Math.ceil(self.filtered.length / self.entryLimit);
         });
       }
@@ -130,11 +134,15 @@ export class MainController {
       self.noOfPages = Math.ceil(self.filtered.length / self.entryLimit);
 
       self.isMyPollsDemand = val;
+      self.currentPage = 1;
     })
 
     this.$rootScope.$on('$stateChangeStart', function(event, next, nextParams, current) {
       self.$rootScope.$broadcast('navShowAll');
     });
+
+
+
   }
 
 

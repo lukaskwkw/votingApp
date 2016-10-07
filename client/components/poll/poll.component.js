@@ -16,9 +16,9 @@ export class PollComponent {
     this.myChoice = {
       index: null
     };
-
+    this.choiceText = '';
     this.$scope = $scope;
-
+    this.encodedData = '';
     this.labels = [];
 
     this.isVoted = false;
@@ -34,8 +34,9 @@ export class PollComponent {
         return vote.userId !== this.signature;
       });
 
-      if (this.isVoted)
+      if (this.isVoted) {
         this.myChoice.index = this.votedChoiceIndex;
+      }
 
     });
 
@@ -44,6 +45,10 @@ export class PollComponent {
 //       albo sciagnac IP z serwera i przefiltrowac baze w poszukiwaniu IP-ka
 /* TODO: zmniejszyc czcionke odstepy zaby pulle byly mniejsze */
 
+  }
+
+  _encodeData() {
+    return `text=Question '${encodeURIComponent(this.data.question)}'&url=https://voteplexer.herokuapp.com/polls/${this.data._id}`
   }
 
   $onInit() {
@@ -56,8 +61,6 @@ export class PollComponent {
       });
     });
 
-    if (this.isVoted)
-      this.myChoice.index = this.votedChoiceIndex;
 
 
     this.labels = this.data.choices.map(elem => {
@@ -66,6 +69,13 @@ export class PollComponent {
     this.chartData = this.data.choices.map(elem => {
       return elem.votes.length;
     });
+
+    if (this.isVoted) {
+      this.myChoice.index = this.votedChoiceIndex;
+      this.choiceText = this.labels[this.myChoice.index];
+      this.encodedData = this._encodeData();
+    }
+
   }
 
   vote($index) {
@@ -75,34 +85,31 @@ export class PollComponent {
     if ($index !== undefined)
       choice = $index;
 
-    console.log('data', this.data);
-    console.log(choice);
     this.Poll.$resource.vote({
       id: this.data._id,
       choice
     }).$promise.then(res => {
 
-      var choiceText = '';
+
       if(this.myChoice.index === 'custom') {
-        choiceText = choice;
-        console.log(choice);
+        this.choiceText = choice;
         this.data.choices.push({text: choice, votes: [{userId: this.signature}]});
         this.labels.push(choice);
         this.chartData.push(1);
         this.myChoice.index = this.labels.length-1;
       } else {
         this.data.choices[choice].votes.push({userId: this.signature});
-        choiceText = this.labels[choice];
+        this.choiceText = this.labels[choice];
         this.chartData[choice]++;
       }
 
+      this.encodedData = this._encodeData();;
       this.isVoted = true;
       // this.localStorageService.remove('PollsDB');
-      console.log(res);
 
 
       /* TODO: zamienic to zeby podswietlalo na zielono na opcje na ktora zaglosowalem */
-      this.ngNotify.set(`You voted on ${choiceText} `, {
+      this.ngNotify.set(`You voted on ${this.choiceText} `, {
           type: 'info',
           duration: 3000
       });

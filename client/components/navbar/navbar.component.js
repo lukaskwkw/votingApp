@@ -31,6 +31,11 @@ export class NavbarComponent {
   }
 
   myPollsClick() {
+    if (!this.isLoggedIn()) {
+      this.$state.go('login');
+
+      return;
+    }
     this.$state.go('main').then( () => {
       this.isMyPollsClicked = !this.isMyPollsClicked;
       this.myPollsCaption = this.isMyPollsClicked ? 'Show all' : 'My polls';

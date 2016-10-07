@@ -7,7 +7,7 @@
       <span class="icon-bar"></span>
       <span class="icon-bar"></span>
       </button>
-      <a href="/" class="navbar-brand">VotePlexer</a>
+      <a ng-click="$ctrl.pollsClick()" ui-sref="main" class="navbar-brand">VotePlexer</a>
     </div>
     <div uib-collapse="$ctrl.isCollapsed" class="navbar-collapse collapse" id="navbar-main">
       <ul class="nav navbar-nav">
@@ -25,19 +25,20 @@
       <ul class="nav navbar-nav navbar-right">
 
 
-        <li ng-show="$ctrl.isLoggedIn()" ui-sref-active="active"><a ui-sref="poll-builder"><span class="glyphicon glyphicon-plus"></span>Add poll</a>
+        <li ui-sref-active="active"><a ui-sref="poll-builder"><span class="glyphicon glyphicon-plus"></span>Add poll</a>
         </li>
 
-      <li ng-show="$ctrl.isLoggedIn()" ng-click="$ctrl.pollsClick()"><a ui-sref="main"><span class="glyphicon glyphicon-stats"></span>All polls</a>
+        <li ng-class="$ctrl.isMyPollsClicked ? 'active' : '' " ng-click="$ctrl.myPollsClick()"><a style="cursor: pointer"><span class="fa fa-line-chart"></span>{{$ctrl.myPollsCaption}}</a>
+        </li>
+
+      <li ng-click="$ctrl.pollsClick()"><a ui-sref="main"><span class="glyphicon glyphicon-stats"></span>All polls</a>
       </li>
+
 
         <li ng-hide="$ctrl.isLoggedIn()" ui-sref-active="active"><a ui-sref="signup">Sign up</a>
         </li>
 
         <li ng-hide="$ctrl.isLoggedIn()" ui-sref-active="active"><a ui-sref="login">Login</a>
-        </li>
-
-        <li ng-show="$ctrl.isLoggedIn()" ng-class="$ctrl.isMyPollsClicked ? 'active' : '' " ng-click="$ctrl.myPollsClick()"><a style="cursor: pointer"><span class="fa fa-line-chart"></span>{{$ctrl.myPollsCaption}}</a>
         </li>
 
         <li ng-show="$ctrl.isLoggedIn()" ui-sref-active="active"><a ui-sref="settings"><span class="glyphicon glyphicon-cog"></span></a>

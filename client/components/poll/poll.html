@@ -21,17 +21,11 @@
       <canvas ng-if="$ctrl.data.chartType === 5" id="pie" class="chart chart-polar-area"
       chart-data="$ctrl.chartData" chart-labels="$ctrl.labels" chart-options="options">
       </canvas>
-
     </div>
     <div class="panel-body">
-
-
-
-<!--       <canvas ng-if="$ctrl.chartData" id="pie" class="chart chart-pie"
+      <!--       <canvas ng-if="$ctrl.chartData" id="pie" class="chart chart-pie"
       chart-data="$ctrl.chartData" chart-labels="$ctrl.labels" chart-options="options">
       </canvas> -->
-
-
       <hr>
       <h3 class="panel-title">{{$ctrl.data.question}}</h3>
       <hr>
@@ -50,6 +44,22 @@
       <button ng-disabled="$ctrl.isVoted" ng-show=" $ctrl.myChoice.index === 'custom'" type="submit" ng-click="$ctrl.vote()" class="btn btn-primary btn-block btn-sm">
       Vote</button>
       <a href="#" class="small"></a>
+      <div ng-show="$ctrl.isVoted">
+        <h4>Share this poll</h4>
+        <!-- data-text choiceText musi pobrac tekst -->
+        <a class="btn btn-social-icon btn-twitter" href="https://twitter.com/intent/tweet?{{$ctrl.encodedData}}"
+          target="_blank">
+          <span class="fa fa-twitter"></span>
+        </a>
+        <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A//voteplexer.herokuapp.com/polls/{{$ctrl.data._id}}" class="btn btn-social-icon btn-facebook"
+        target="_blank">
+          <span class="fa fa-facebook"></span>
+        </a>
+        <a href="https://plus.google.com/share?url=https%3A//voteplexer.herokuapp.com/polls/{{$ctrl.data._id}}" class="btn btn-social-icon btn-google"
+        target="_blank">
+          <span class="fa fa-google"></span>
+        </a>
+      </div>
     </div>
   </form>
 </div>

@@ -1,8 +1,12 @@
 # VotePlexer
 
-This project was generated with the [Angular Full-Stack Generator](https://github.com/DaftMonk/generator-angular-fullstack) version 4.0.5.
-
 ## Getting Started
+
+MEAN stack Voting app. Vote on polls, create own and share them on social media. Chart.js for
+displaying aggregate votes. Technologies: ES6, AngularJS 1.5, UI Bootstrap. PassportJS
+authentication for twitter OAuth. Lusca for XSS, CSRF protection.
+
+* Votes for unauthenticated users are saved by client IP address.
 
 ### Prerequisites
 

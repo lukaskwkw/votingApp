@@ -22,6 +22,21 @@
   background: #4393B9;
 }
 
+
+
+.option-clear {
+  position: absolute;
+  color: #ddd;
+  cursor: pointer;
+  font-size: 17px;
+  right: 45px;
+  z-index: 5;
+  margin: auto;
+  top: 0;
+  height: 15px;
+  bottom: 0;
+}
+
 .navbar-text {
   margin-left: 15px;
 }
@@ -34,11 +49,11 @@
 .searchByUserIdButton {
   position: absolute;
   z-index: 1000;
-  top: -20px;
-  left: 0px;
+  top: 6px;
+  right: 70px;
 
   >span {
-    background-color: #ddd;
+    font-size: 12px;
   }
 }
 
@@ -107,15 +122,21 @@
 }
 
 .search-bar {
-  display: inline-block;
 }
+
+.pagination-center {
+  text-align: center;
+  width: 100%;
+}
+
 .pagination-sm {
   margin: 0;
+  display: inline-block;
 }
 
 
 #search-nav {
-  display: inline-block;
+  display: block;
   margin: 0;
   margin-top: -20px;
 }
